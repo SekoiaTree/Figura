@@ -3,6 +3,7 @@ package net.blancworks.figura.lua.api.particle;
 import it.unimi.dsi.fastutil.floats.FloatArrayList;
 import net.blancworks.figura.lua.CustomScript;
 import net.blancworks.figura.lua.LuaUtils;
+import net.blancworks.figura.lua.api.LuaAPI;
 import net.blancworks.figura.lua.api.ReadOnlyLuaTable;
 import net.blancworks.figura.trust.PlayerTrustManager;
 import net.minecraft.client.MinecraftClient;
@@ -17,8 +18,12 @@ import org.luaj.vm2.lib.TwoArgFunction;
 
 import java.util.HashMap;
 
-public class ParticleAPI {
-    
+public class ParticleAPI implements LuaAPI {
+    private static final ParticleAPI INSTANCE = new ParticleAPI();
+    public static ParticleAPI getInstance() {
+        return INSTANCE;
+    }
+
     public static HashMap<String, DefaultParticleType> particleTypes = new HashMap<String, DefaultParticleType>(){{
         for (Identifier id : Registry.PARTICLE_TYPE.getIds()) {
             ParticleType<?> type = Registry.PARTICLE_TYPE.get(id);
@@ -29,11 +34,11 @@ public class ParticleAPI {
         }
     }};
     
-    public static Identifier getID() {
+    public Identifier getID() {
         return new Identifier("default", "particle");
     }
 
-    public static ReadOnlyLuaTable getForScript(CustomScript script) {
+    public ReadOnlyLuaTable getForScript(CustomScript script) {
         return new ReadOnlyLuaTable(new LuaTable() {{
             set("addParticle", new TwoArgFunction() {
                 @Override

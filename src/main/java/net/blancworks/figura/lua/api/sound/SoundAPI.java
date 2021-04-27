@@ -3,6 +3,7 @@ package net.blancworks.figura.lua.api.sound;
 import it.unimi.dsi.fastutil.floats.FloatArrayList;
 import net.blancworks.figura.lua.CustomScript;
 import net.blancworks.figura.lua.LuaUtils;
+import net.blancworks.figura.lua.api.LuaAPI;
 import net.blancworks.figura.lua.api.ReadOnlyLuaTable;
 import net.blancworks.figura.trust.PlayerTrustManager;
 import net.minecraft.client.MinecraftClient;
@@ -17,7 +18,11 @@ import org.luaj.vm2.lib.TwoArgFunction;
 
 import java.util.HashMap;
 
-public class SoundAPI {
+public class SoundAPI implements LuaAPI {
+    private static final SoundAPI INSTANCE = new SoundAPI();
+    public static SoundAPI getInstance() {
+        return INSTANCE;
+    }
 
     public static HashMap<String, SoundEvent> soundEvents = new HashMap<String, SoundEvent>() {{
         for (Identifier id : Registry.SOUND_EVENT.getIds()) {
@@ -28,11 +33,11 @@ public class SoundAPI {
     }};
 
 
-    public static Identifier getID() {
+    public Identifier getID() {
         return new Identifier("default", "sound");
     }
 
-    public static ReadOnlyLuaTable getForScript(CustomScript script) {
+    public ReadOnlyLuaTable getForScript(CustomScript script) {
         return new ReadOnlyLuaTable(new LuaTable() {{
             set("playSound", new TwoArgFunction() {
                 @Override

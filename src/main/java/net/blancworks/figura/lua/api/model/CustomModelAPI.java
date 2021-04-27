@@ -1,6 +1,7 @@
 package net.blancworks.figura.lua.api.model;
 
 import net.blancworks.figura.lua.CustomScript;
+import net.blancworks.figura.lua.api.LuaAPI;
 import net.blancworks.figura.lua.api.ReadOnlyLuaTable;
 import net.blancworks.figura.lua.api.ScriptLocalAPITable;
 import net.blancworks.figura.lua.api.VectorAPI;
@@ -15,13 +16,17 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.OneArgFunction;
 import org.luaj.vm2.lib.ZeroArgFunction;
 
-public class CustomModelAPI {
+public class CustomModelAPI implements LuaAPI {
+    private static final CustomModelAPI INSTANCE = new CustomModelAPI();
+    public static CustomModelAPI getInstance() {
+        return INSTANCE;
+    }
 
-    public static Identifier getID() {
+    public Identifier getID() {
         return new Identifier("default", "model");
     }
 
-    public static ReadOnlyLuaTable getForScript(CustomScript script) {
+    public ReadOnlyLuaTable getForScript(CustomScript script) {
         ScriptLocalAPITable producedTable = new ScriptLocalAPITable(script, new LuaTable() {{
             for (CustomModelPart part : script.playerData.model.allParts) {
                 set(part.name, new CustomModelPartTable(part));

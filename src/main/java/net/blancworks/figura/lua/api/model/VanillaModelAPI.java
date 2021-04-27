@@ -4,6 +4,7 @@ import it.unimi.dsi.fastutil.floats.FloatArrayList;
 import net.blancworks.figura.FiguraMod;
 import net.blancworks.figura.lua.CustomScript;
 import net.blancworks.figura.lua.LuaUtils;
+import net.blancworks.figura.lua.api.LuaAPI;
 import net.blancworks.figura.lua.api.ReadOnlyLuaTable;
 import net.blancworks.figura.lua.api.ScriptLocalAPITable;
 import net.minecraft.client.MinecraftClient;
@@ -20,7 +21,11 @@ import org.luaj.vm2.lib.ZeroArgFunction;
 
 import java.util.function.Supplier;
 
-public class VanillaModelAPI {
+public class VanillaModelAPI implements LuaAPI {
+    private static final VanillaModelAPI INSTANCE = new VanillaModelAPI();
+    public static VanillaModelAPI getInstance() {
+        return INSTANCE;
+    }
 
     //Main body accessors
     public static final String VANILLA_HEAD = "HEAD";
@@ -38,15 +43,16 @@ public class VanillaModelAPI {
     public static final String VANILLA_LEFT_PANTS = "LEFT_PANTS";
     public static final String VANILLA_RIGHT_PANTS = "RIGHT_PANTS";
 
-
-    public static Identifier getID() {
+    @Override
+    public Identifier getID() {
         return new Identifier("default", "vanilla_model");
     }
 
     public static Supplier<PlayerEntityModel> getCurrModel = () -> FiguraMod.currentData.vanillaModel;
 
-    public static ReadOnlyLuaTable getForScript(CustomScript script) {
-        ScriptLocalAPITable producedTable = new ScriptLocalAPITable(script, new LuaTable() {{
+    @Override
+    public ReadOnlyLuaTable getForScript(CustomScript script) {
+        return new ScriptLocalAPITable(script, new LuaTable() {{
 
             set(VANILLA_HEAD, getTableForPart(() -> getCurrModel.get().head, VANILLA_HEAD, script));
             set(VANILLA_TORSO, getTableForPart(() -> getCurrModel.get().torso, VANILLA_TORSO, script));
@@ -66,13 +72,10 @@ public class VanillaModelAPI {
             set(VANILLA_LEFT_PANTS, getTableForPart(() -> getCurrModel.get().leftPantLeg, VANILLA_LEFT_PANTS, script));
             set(VANILLA_RIGHT_PANTS, getTableForPart(() -> getCurrModel.get().rightPantLeg, VANILLA_RIGHT_PANTS, script));
         }});
-
-        return producedTable;
     }
 
     public static ReadOnlyLuaTable getTableForPart(Supplier<ModelPart> part, String accessor, CustomScript script) {
-        ModelPartTable producedTable = new ModelPartTable(part, accessor, script);
-        return producedTable;
+        return new ModelPartTable(part, accessor, script);
     }
 
     public static class ModelPartTable extends ScriptLocalAPITable {

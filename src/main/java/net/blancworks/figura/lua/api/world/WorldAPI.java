@@ -2,6 +2,7 @@ package net.blancworks.figura.lua.api.world;
 
 import net.blancworks.figura.lua.CustomScript;
 import net.blancworks.figura.lua.LuaUtils;
+import net.blancworks.figura.lua.api.LuaAPI;
 import net.blancworks.figura.lua.api.ReadOnlyLuaTable;
 import net.blancworks.figura.lua.api.world.block.BlockStateAPI;
 import net.minecraft.block.BlockState;
@@ -16,7 +17,11 @@ import org.luaj.vm2.*;
 import org.luaj.vm2.lib.OneArgFunction;
 import org.luaj.vm2.lib.ZeroArgFunction;
 
-public class WorldAPI {
+public class WorldAPI implements LuaAPI {
+    private static final WorldAPI INSTANCE = new WorldAPI();
+    public static WorldAPI getInstance() {
+        return INSTANCE;
+    }
     
     private static World getWorld(){
         return MinecraftClient.getInstance().world;
@@ -27,11 +32,11 @@ public class WorldAPI {
     private static World lastWorld;
 
 
-    public static Identifier getID() {
+    public Identifier getID() {
         return new Identifier("default", "world");
     }
 
-    public static ReadOnlyLuaTable getForScript(CustomScript script) {
+    public ReadOnlyLuaTable getForScript(CustomScript script) {
         
         if(getWorld() != lastWorld)
             updateGlobalTable();

@@ -3,6 +3,7 @@ package net.blancworks.figura.lua.api.model;
 import it.unimi.dsi.fastutil.floats.FloatArrayList;
 import net.blancworks.figura.lua.CustomScript;
 import net.blancworks.figura.lua.LuaUtils;
+import net.blancworks.figura.lua.api.LuaAPI;
 import net.blancworks.figura.lua.api.ReadOnlyLuaTable;
 import net.blancworks.figura.lua.api.ScriptLocalAPITable;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
@@ -14,7 +15,11 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.OneArgFunction;
 import org.luaj.vm2.lib.ZeroArgFunction;
 
-public class ArmorModelAPI {
+public class ArmorModelAPI implements LuaAPI {
+    private static final ArmorModelAPI INSTANCE = new ArmorModelAPI();
+    public static ArmorModelAPI getInstance() {
+        return INSTANCE;
+    }
 
     public static final String VANILLA_HELMET = "HELMET";
     public static final String VANILLA_CHESTPLATE = "CHESTPLATE";
@@ -22,11 +27,11 @@ public class ArmorModelAPI {
     public static final String VANILLA_BOOTS = "BOOTS";
 
     
-    public static Identifier getID() {
+    public Identifier getID() {
         return new Identifier("default", "armor_model");
     }
 
-    public static ReadOnlyLuaTable getForScript(CustomScript script) {
+    public ReadOnlyLuaTable getForScript(CustomScript script) {
         ScriptLocalAPITable producedTable = new ScriptLocalAPITable(script, new LuaTable() {{
             PlayerEntityModel mdl = script.playerData.vanillaModel;
 

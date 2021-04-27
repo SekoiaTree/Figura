@@ -3,6 +3,7 @@ package net.blancworks.figura.lua.api.model;
 import it.unimi.dsi.fastutil.floats.FloatArrayList;
 import net.blancworks.figura.lua.CustomScript;
 import net.blancworks.figura.lua.LuaUtils;
+import net.blancworks.figura.lua.api.LuaAPI;
 import net.blancworks.figura.lua.api.ReadOnlyLuaTable;
 import net.blancworks.figura.lua.api.ScriptLocalAPITable;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
@@ -14,7 +15,11 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.OneArgFunction;
 import org.luaj.vm2.lib.ZeroArgFunction;
 
-public class ItemModelAPI {
+public class ItemModelAPI implements LuaAPI {
+    private static final ItemModelAPI INSTANCE = new ItemModelAPI();
+    public static ItemModelAPI getInstance() {
+        return INSTANCE;
+    }
 
     public static final String VANILLA_LEFT_HAND = "LEFT_HAND";
     public static final String VANILLA_RIGHT_HAND = "RIGHT_HAND";
@@ -23,11 +28,11 @@ public class ItemModelAPI {
     public static final Identifier VANILLA_RIGHT_HAND_ID = new Identifier("figura", "right_hand");
 
 
-    public static Identifier getID() {
+    public Identifier getID() {
         return new Identifier("default", "held_item_model");
     }
 
-    public static ReadOnlyLuaTable getForScript(CustomScript script) {
+    public ReadOnlyLuaTable getForScript(CustomScript script) {
         ScriptLocalAPITable producedTable = new ScriptLocalAPITable(script, new LuaTable() {{
             PlayerEntityModel mdl = script.playerData.vanillaModel;
 

@@ -48,16 +48,16 @@ public class FiguraLuaManager {
     }
 
     public static void registerAPI() {
-        apiSuppliers.put(ParticleAPI.getID(), ParticleAPI::getForScript);
-        apiSuppliers.put(CustomModelAPI.getID(), CustomModelAPI::getForScript);
-        apiSuppliers.put(VanillaModelAPI.getID(), VanillaModelAPI::getForScript);
-        apiSuppliers.put(PlayerEntityAPI.getID(), PlayerEntityAPI::getForScript);
-        apiSuppliers.put(WorldAPI.getID(), WorldAPI::getForScript);
-        apiSuppliers.put(ArmorModelAPI.getID(), ArmorModelAPI::getForScript);
-        apiSuppliers.put(ElytraModelAPI.getID(), ElytraModelAPI::getForScript);
-        apiSuppliers.put(ItemModelAPI.getID(), ItemModelAPI::getForScript);
-        apiSuppliers.put(VectorAPI.getID(), VectorAPI::getForScript);
-        apiSuppliers.put(SoundAPI.getID(), SoundAPI::getForScript);
+        apiSuppliers.put(ParticleAPI.getInstance().getID(), ParticleAPI.getInstance()::getForScript);
+        apiSuppliers.put(CustomModelAPI.getInstance().getID(), CustomModelAPI.getInstance()::getForScript);
+        apiSuppliers.put(VanillaModelAPI.getInstance().getID(), VanillaModelAPI.getInstance()::getForScript);
+        apiSuppliers.put(PlayerEntityAPI.getInstance().getID(), PlayerEntityAPI.getInstance()::getForScript);
+        apiSuppliers.put(WorldAPI.getInstance().getID(), WorldAPI.getInstance()::getForScript);
+        apiSuppliers.put(ArmorModelAPI.getInstance().getID(), ArmorModelAPI.getInstance()::getForScript);
+        apiSuppliers.put(ElytraModelAPI.getInstance().getID(), ElytraModelAPI.getInstance()::getForScript);
+        apiSuppliers.put(ItemModelAPI.getInstance().getID(), ItemModelAPI.getInstance()::getForScript);
+        apiSuppliers.put(VectorAPI.getInstance().getID(), VectorAPI.getInstance()::getForScript);
+        apiSuppliers.put(SoundAPI.getInstance().getID(), SoundAPI.getInstance()::getForScript);
     }
 
     public static void registerEvents(){

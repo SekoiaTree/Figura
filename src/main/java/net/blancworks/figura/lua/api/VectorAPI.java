@@ -18,7 +18,11 @@ import org.luaj.vm2.lib.ZeroArgFunction;
 
 import java.util.ArrayList;
 
-public class VectorAPI {
+public class VectorAPI implements LuaAPI {
+    private static final VectorAPI INSTANCE = new VectorAPI();
+    public static VectorAPI getInstance() {
+        return INSTANCE;
+    }
 
     public static final ArrayList<String> componentNames = new ArrayList<String>() {{
         add("x,u,r");
@@ -35,11 +39,11 @@ public class VectorAPI {
         return MinecraftClient.getInstance().world;
     }
 
-    public static Identifier getID() {
+    public Identifier getID() {
         return new Identifier("default", "vectors");
     }
 
-    public static ReadOnlyLuaTable getForScript(CustomScript script) {
+    public ReadOnlyLuaTable getForScript(CustomScript script) {
 
         if (getWorld() != lastWorld)
             updateGlobalTable();

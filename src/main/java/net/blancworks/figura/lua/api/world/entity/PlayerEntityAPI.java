@@ -1,6 +1,7 @@
 package net.blancworks.figura.lua.api.world.entity;
 
 import net.blancworks.figura.lua.CustomScript;
+import net.blancworks.figura.lua.api.LuaAPI;
 import net.blancworks.figura.lua.api.ReadOnlyLuaTable;
 import net.blancworks.figura.lua.api.item.ItemStackAPI;
 import net.minecraft.client.MinecraftClient;
@@ -14,13 +15,17 @@ import org.luaj.vm2.LuaValue;
 import org.luaj.vm2.lib.OneArgFunction;
 import org.luaj.vm2.lib.ZeroArgFunction;
 
-public class PlayerEntityAPI {
+public class PlayerEntityAPI implements LuaAPI {
+    private static final PlayerEntityAPI INSTANCE = new PlayerEntityAPI();
+    public static PlayerEntityAPI getInstance() {
+        return INSTANCE;
+    }
 
-    public static Identifier getID() {
+    public Identifier getID() {
         return new Identifier("default", "player");
     }
 
-    public static ReadOnlyLuaTable getForScript(CustomScript script) {
+    public ReadOnlyLuaTable getForScript(CustomScript script) {
         World w = MinecraftClient.getInstance().world;
         PlayerEntity ent = w.getPlayerByUuid(script.playerData.playerId);
         if(ent == null)
